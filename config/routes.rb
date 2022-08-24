@@ -11,9 +11,20 @@ Rails.application.routes.draw do
   post "restaurants", to: "restaurants#create"
 
   get "restaurants/:id", to: "restaurants#show", as: :restaurant_show
-
-  get "restaurants/:id/edit", to: "restaurants#edit"
-  patch "restaurants/:id", to: "restaurants#update"
+  get "restaurants/:restaurant_id/reviews/new", to: "reviews#new"
+  # get "restaurants/:id/edit", to: "restaurants#edit"
+  # patch "restaurants/:id", to: "restaurants#update"
 
   delete "restaurants/:id", to: "restaurants#destroy"
+
+  resources :restaurants do
+    collection do
+      get :top
+    end
+    member do
+      get :chef
+    end
+    resources :reviews, only: [:new, :create]
+  end
+  resources :reviews, only: [:destroy]
 end
